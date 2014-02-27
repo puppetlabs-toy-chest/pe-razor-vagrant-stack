@@ -3,13 +3,13 @@
 
 INTERNAL_NETWORK_NAME = 'Razor_Network'
 
-RAZOR_SERVER_IP  = "192.168.50.11"
-PUPPET_MASTER_IP = "192.168.50.21"
-DHCP_SERVER_IP   = "192.168.50.31"
+RAZOR_SERVER_IP  = '192.168.50.11'
+PUPPET_MASTER_IP = '192.168.50.21'
+DHCP_SERVER_IP   = '192.168.50.31'
 
-RAZOR_SERVER_HOSTNAME  = "razor-server"
-PUPPET_SERVER_HOSTNAME =
-DHCP_SERVER_HOSTNAME   = 
+RAZOR_SERVER_HOSTNAME  = 'razor-server'
+PUPPET_SERVER_HOSTNAME = 'puppet-master'
+DHCP_SERVER_HOSTNAME   = 'dhcp-server'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -27,9 +27,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     razor.vm.hostname = RAZOR_SERVER_HOSTNAME
 
     razor.vm.provision :hosts do |provisioner|
-      provisioner.add_host RAZOR_SERVER_IP, ['razor-server']
-      provisioner.add_host PUPPET_MASTER_IP, ['puppet-master']
-      provisioner.add_host DHCP_SERVER_IP, ['dhcp-server']
+      provisioner.add_host RAZOR_SERVER_IP, [RAZOR_SERVER_HOSTNAME]
+      provisioner.add_host PUPPET_MASTER_IP, [PUPPET_SERVER_HOSTNAME]
+      provisioner.add_host DHCP_SERVER_IP, [DHCP_SERVER_HOSTNAME]
     end
   
     # Overwrite SSH port forwarding to prevent collisions when resuming from suspended mode
@@ -50,9 +50,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.vm.hostname = PUPPET_SERVER_HOSTNAME
     
     puppet.vm.provision :hosts do |provisioner|
-      provisioner.add_host RAZOR_SERVER_IP, ['razor-server']
-      provisioner.add_host PUPPET_MASTER_IP, ['puppet-master']
-      provisioner.add_host DHCP_SERVER_IP, ['dhcp-server']
+      provisioner.add_host RAZOR_SERVER_IP, [RAZOR_SERVER_HOSTNAME]
+      provisioner.add_host PUPPET_MASTER_IP, [PUPPET_SERVER_HOSTNAME]
+      provisioner.add_host DHCP_SERVER_IP, [DHCP_SERVER_HOSTNAME]
     end
     
     # Overwrite SSH port forwarding to prevent collisions when resuming from suspended mode
@@ -73,9 +73,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dhcp.vm.hostname = DHCP_SERVER_HOSTNAME
     
     dhcp.vm.provision :hosts do |provisioner|
-      provisioner.add_host RAZOR_SERVER_IP, ['razor-server']
-      provisioner.add_host PUPPET_MASTER_IP, ['puppet-master']
-      provisioner.add_host DHCP_SERVER_IP, ['dhcp-server']
+      provisioner.add_host RAZOR_SERVER_IP, [RAZOR_SERVER_HOSTNAME]
+      provisioner.add_host PUPPET_MASTER_IP, [PUPPET_SERVER_HOSTNAME]
+      provisioner.add_host DHCP_SERVER_IP, [DHCP_SERVER_HOSTNAME]
     end
     
     # Overwrite SSH port forwarding to prevent collisions when resuming from suspended mode
