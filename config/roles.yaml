@@ -1,0 +1,68 @@
+---
+roles:
+
+  base:
+    provider:
+      type: virtualbox
+      customize:
+        - [modifyvm, !ruby/sym id, '--memory', 1536]
+    #synced_folders:
+    #  - host_path:  'puppet'
+    #    guest_path: '/root/puppet'
+    #  - host_path:  'files'
+    #    guest_path: '/var/seteam-vagrant-stack'
+#    provisioners:
+#      - type: shell
+#        inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
+#      - type: hosts
+#      - type: shell
+#        inline: |-
+#          /opt/puppet/bin/puppet apply \
+#            --confdir=/root/puppet \
+#            --ssldir=/etc/puppetlabs/puppet/ssl \
+#            --hiera_config=/root/puppet/hiera.yaml \
+#            --modulepath=/root/puppet/modules \
+#            --exec 'include role::puppetmaster'
+
+  master:
+   provisioners:
+     - type: shell
+       inline: 'puppet config set modulepath /vagrant/modules:/opt/puppet/share/puppet/modules; /opt/puppet/bin/puppet apply -e "include razor_node_classification"'
+
+  master320:
+    provisioners:
+      - type: shell
+        inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
+      - type: hosts
+      - type: pe_bootstrap
+        role: :master
+        version: '3.2.0'
+
+  windows_agent:
+    guest: windows
+    private_networks:
+      - {ip: '0.0.0.0', auto_network: true}
+    provisioners:
+      - {type: hosts}
+      - type: pe_bootstrap
+        version: '3.2.0'
+        master: 'puppet-master'
+
+  agent_320:
+    provisioners:
+      - {type: shell, inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"}
+      - {type: hosts}
+      - type: pe_bootstrap
+        version: '3.2.0'
+        master: 'puppet-master' 
+
+  razor_client:
+    provisioners:
+      - type: shell
+        inline: '/opt/puppet/bin/gem install razor-client'
+
+  centos: 
+    provisioners:
+      - type: shell
+        inline: 'service iptables stop; chkconfig iptables off;'
+

@@ -1,0 +1,44 @@
+# Set this to the name of your VirtualBox host-only interface.
+# dnsmasq will listen for DHCP and DNS requests on this interface as
+# well as the loopback:
+interface=eth2
+ 
+# This option will be forced anyway on OS X so set here to avoid a warning:
+bind-interfaces
+ 
+# Enable the integrated DHCP server, you need
+# to supply the range of addresses available for lease and optionally
+# a lease time. If you have more than one network, you will need to
+# repeat this for each network on which you want to supply DHCP
+# service.
+# Select a range from the address and netmask shown in VirtualBox's
+# host-only network configuration dialog:
+dhcp-range=192.168.50.2,192.168.50.150,infinite
+ 
+# The default directory does not exist on OSX and this cause an
+# error when enabling DHCP, set an alternative location here:
+#dhcp-leasefile=/var/lib/dnsmasq.leases
+ 
+# Assume anything in the .vm domain is local
+#local=/vm/
+ 
+# Set this (and domain: see below) if you want to have a domain
+# automatically added to simple names in a hosts-file.
+expand-hosts
+ 
+# Set the domain for dnsmasq. this is optional, but if it is set, it
+# does the following things.
+# 1) Allows DHCP hosts to have fully qualified domain names, as long
+# as the domain part matches this setting.
+# 2) Sets the "domain" DHCP option thereby potentially setting the
+# domain of all systems configured by DHCP
+# 3) Provides the domain part for "expand-hosts"
+domain=vm
+ 
+# This must be the address of your host on the vboxnet0 network
+# find this in the VirtualBox host-only network preferences
+address=/vbox-host.vm/192.168.50.32
+
+# This setting enables reverse DNS lookup.
+server=/192.in-addr.arpa/192.168.50.1
+

@@ -1,0 +1,20 @@
+---
+vms:
+
+  - name: "puppet-master"
+    box:  "centos-64-x64-vbox4210-nocm"
+    private_networks:
+    - { ip: '192.168.50.22', virtualbox__intnet: "Razor_Network" }
+    roles: [ "base", "master", "master320", "centos" ]
+
+  - name: "razor-server"
+    box:  "centos-64-x64-vbox4210-nocm"
+    private_networks:
+    - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
+    roles: [ "razor_client", "base", "agent_320", "centos" ]
+
+  - name: "dhcp-server"
+    box:  "centos-64-x64-vbox4210-nocm"
+    private_networks:
+    - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
+    roles: [ "agent_320", "centos" ]
