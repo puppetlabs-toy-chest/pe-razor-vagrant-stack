@@ -1,7 +1,7 @@
 # Set this to the name of your VirtualBox host-only interface.
 # dnsmasq will listen for DHCP and DNS requests on this interface as
 # well as the loopback:
-interface=eth2
+interface=eth1
  
 # This option will be forced anyway on OS X so set here to avoid a warning:
 bind-interfaces
