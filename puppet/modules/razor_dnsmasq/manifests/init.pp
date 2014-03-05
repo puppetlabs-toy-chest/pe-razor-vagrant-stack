@@ -53,5 +53,15 @@ class razor_dnsmasq {
     ensure => directory,
     before => Service['dnsmasq']
   }
+  
+  file { '/var/lib/tftpboot/undionly-20140116.kpxe' :
+    ensure => file,
+    source => 'puppet:///modules/razor_dnsmasq/undionly-20140116.kpxe',
+  }  
+
+  exec { 'get bootstrap.ipxe from razor server' :
+    command => '/usr/bin/wget http://razor-server:8080/api/microkernel/bootstrap?nic_max=1 -O /var/lib/tftpboot/bootstrap.ipxe',
+    unless  => '/bin/ls /var/lib/tftpboot/bootstrap.ipxe',
+  }
 
 }
