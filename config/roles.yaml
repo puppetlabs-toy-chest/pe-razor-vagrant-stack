@@ -20,7 +20,7 @@ roles:
       - type: shell
         inline: '/opt/puppet/bin/puppet module install puppetlabs/pe_gem --version 0.0.1'
       - type: shell
-        inline: '/bin/cp /tmp/puppet/modules/razor_node_classification/files/site.pp /etc/puppetlabs/puppet/manifests/site.pp'
+        inline: '/bin/cp /tmp/puppet/manifests/site.pp /etc/puppetlabs/puppet/manifests/site.pp'
 
   master320:
     provisioners:
