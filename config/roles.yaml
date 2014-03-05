@@ -18,15 +18,9 @@ roles:
       - type: shell
         inline: "/opt/puppet/bin/puppet config set modulepath /etc/puppetlabs/puppet/modules:/tmp/puppet/modules:/opt/puppet/share/puppet/modules/"
       - type: shell
-        inline: 'puppet module install puppetlabs/pe_gem --version 0.0.1'
+        inline: '/opt/puppet/bin/puppet module install puppetlabs/pe_gem --version 0.0.1'
       - type: shell
-        inline: |-
-          /opt/puppet/bin/puppet apply \
-            --confdir=/tmp/puppet \
-            --ssldir=/etc/puppetlabs/puppet/ssl \
-            --hiera_config=/tmp/puppet/hiera.yaml \
-            --modulepath=/tmp/puppet/modules \
-            --exec 'include razor_node_classification'
+        inline: '/bin/cp /tmp/puppet/modules/razor_node_classification/files/site.pp /etc/puppetlabs/puppet/puppet.conf'
 
   master320:
     provisioners:
@@ -54,11 +48,6 @@ roles:
       - type: pe_bootstrap
         version: '3.2.0'
         master: 'puppet-master' 
-
-  run_puppet:
-    provisioners:
-      - type: shell
-        inline: '/opt/puppet/bin/puppet agent -t'
 
   centos: 
     provisioners:
