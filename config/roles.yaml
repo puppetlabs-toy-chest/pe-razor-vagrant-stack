@@ -1,11 +1,17 @@
 ---
 roles:
 
-  base:
+  base_1536mb_ram:
     provider:
       type: virtualbox
       customize:
         - [modifyvm, !ruby/sym id, '--memory', 1536]
+
+  base_1024mb_ram:
+    provider:
+      type: virtualbox
+      customize:
+        - [modifyvm, !ruby/sym id, '--memory', 1024]
 
   master:
     synced_folders:
