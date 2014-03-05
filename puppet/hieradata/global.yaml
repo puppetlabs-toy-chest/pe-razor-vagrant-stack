@@ -1,2 +1,0 @@
----
-role::puppetmaster::r10k_environments_remote: "https://github.com/puppetlabs-seteam/puppet-environments"
