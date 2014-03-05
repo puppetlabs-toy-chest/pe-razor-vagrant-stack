@@ -1,4 +1,4 @@
-class razor_razor_server {
+class razor_client {
 
   package { 'razor-client' :
     ensure   => present,
