@@ -11,10 +11,10 @@ vms:
     box:  "centos-64-x64-vbox4210-nocm"
     private_networks:
     - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
-    roles: [ "run_puppet", "razor_client", "base", "agent_320", "centos" ]
+    roles: [ "razor_client", "base", "agent_320", "centos" ]
 
   - name: "dhcp-server"
     box:  "centos-64-x64-vbox4210-nocm"
     private_networks:
     - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
-    roles: [ "run_puppet", "agent_320", "centos" ]
+    roles: [ "agent_320", "centos" ]
