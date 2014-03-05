@@ -32,4 +32,9 @@ other via `/etc/hosts`.  However, any new boxes you create to PXE boot
 will automatically get an ip from the dhcp-server and will resolve
 the razor-server via DNS that is setup on the dhcp-server.  
 
-
+Total Stack Boot Time (timed on my laptop with SSD) 
+ 1. puppet-master 10 mins
+ 2. razor-server  15 mins
+ 3. dhcp-server   7  mins
+ ------------------------
+                  32 mins  
