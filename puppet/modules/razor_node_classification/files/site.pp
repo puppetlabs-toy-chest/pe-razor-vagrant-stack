@@ -48,4 +48,5 @@ node 'dhcp-server' {
 
 node 'razor-server' {
  include 'pe_razor'
+ include 'razor_razor_server'
 }

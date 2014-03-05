@@ -16,7 +16,9 @@ roles:
         inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
       - type: hosts
       - type: shell
-        inline: "/opt/puppet/bin/puppet config set modulepath /tmp/puppet/modules:/opt/puppet/share/puppet/modules/"
+        inline: "/opt/puppet/bin/puppet config set modulepath /etc/puppetlabs/puppet/modules:/tmp/puppet/modules:/opt/puppet/share/puppet/modules/"
+      - type: shell
+        inline: 'puppet module install puppetlabs/pe_gem --version 0.0.1'
       - type: shell
         inline: |-
           /opt/puppet/bin/puppet apply \
@@ -52,15 +54,6 @@ roles:
       - type: pe_bootstrap
         version: '3.2.0'
         master: 'puppet-master' 
-
-  razor_client:
-    provisioners:
-      - type: shell
-        inline: '/opt/puppet/bin/gem install razor-client'
-      - type: shell 
-        inline: '/opt/puppet/bin/gem install json_pure'
-      - type: shell
-        inline: 'ln -s /opt/puppet/bin/razor /usr/bin/razor'
 
   run_puppet:
     provisioners:
