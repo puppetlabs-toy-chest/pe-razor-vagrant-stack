@@ -14,6 +14,8 @@
     - Change the Adapter Type to PCnet-FAST III (Am79C973)
       - This is the adapter type I used I'm not sure if the others work
 6. Start your new box and it will PXE boot and receive an image from the
-   dhcp server.  From there it will be handed off to the razor server.  
-
+   dhcp server.  From there it will be handed off to the razor server. 
+  - Razor will not provision the box until you setup a policy to do so  
+7. The razor client is installed on the razor-server.  You can setup use
+   the client to create a policy. 
 
