@@ -1,6 +1,8 @@
-1. Install Virtual Box
+1. Install VirtualBox
  - I use 4.2.22
  - I ran into issues downloading the microkernel when using 4.3.6
+2. Install VirtualBox Extension Pack 
+ - This is necessary to be able to PXE boot a VM without a iso file
 2. Install Vagrant 
 3. `vagrant plugin install oscar`
   - Optional: `vagrant plugin install vagrant-multiprovider-snap`
@@ -24,6 +26,8 @@
     razor to instruct it.   
 7. The razor client is installed on the razor-server.  You can use
    the client to create a policy. 
+8. If you would like to connect to the puppet enterprise console you can
+   connect from your machine at https://192.168.51.22.  
 
 If you run into any DNS issues then there's a few things to know.
 The puppet-master, razor-server, and dhcp-server all have static ip
