@@ -40,5 +40,3 @@ Total Stack Boot Time (timed on my laptop with SSD)
  1. puppet-master 10 mins
  2. razor-server  15 mins
  3. dhcp-server   7  mins
- ------------------------
-                  32 mins  
