@@ -5,19 +5,19 @@ vms:
     box:  "centos-64-x64-vbox4210-nocm"
     private_networks:
     - { ip: '192.168.50.22', virtualbox__intnet: "Razor_Network" }
-    - { ip: '192.168.51.22' }
+#    - { ip: '192.168.51.22' }
     roles: [ "base_1536mb_ram", "master",  "master320", "centos" ]
 
   - name: "razor-server"
     box:  "centos-64-x64-vbox4210-nocm"
     private_networks:
     - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
-    - { ip: '192.168.51.12' }
+#    - { ip: '192.168.51.12' }
     roles: [ "base_1024mb_ram", "agent_320", "centos" ]
 
   - name: "dhcp-server"
     box:  "centos-64-x64-vbox4210-nocm"
     private_networks:
     - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
-    - { ip: '192.168.51.32' }
+#    - { ip: '192.168.51.32' }
     roles: [ "agent_320", "centos" ]
