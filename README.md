@@ -1,9 +1,13 @@
 1. Install VirtualBox
- - I use 4.2.22
- - I ran into issues downloading the microkernel when using 4.3.6
+ - I've successfully used 4.2.22 and 4.3.8
 2. Install VirtualBox Extension Pack 
- - This is necessary to be able to PXE boot a VM without a iso file
-2. Install Vagrant 
+ - This is necessary to be able to PXE boot a VM without a iso file or
+   using the default Intel network adapter
+ - I had sucess on VBox 4.2.22 using the PCnet-FAST III (Am79C973)
+   adapter without the extension pack but others reported issues to me
+2. Install Vagrant
+  - Use 1.4.3 for now.  I do not believe 1.5.0 works with this setup
+    yet.   
 3. `vagrant plugin install oscar`
   - Optional: `vagrant plugin install vagrant-multiprovider-snap`
 4. `vagrant up` 
@@ -16,8 +20,10 @@
   - Under Network:
     - Attach it to Internal Network called `Razor_Network`.  This is the
       network the other 3 boxes are on
-    - Change the Adapter Type to PCnet-FAST III (Am79C973)
-      - This is the adapter type I used I'm not sure if the others work
+    - If you run into issues with the download of the microkernel
+      freezing during the download you can try changing to a different
+      network adapter
+        - Such as  PCnet-FAST III (Am79C973)
 6. Start your new box and it will PXE boot and receive an image from the
    dhcp server.  
   - From there it will be handed off to the razor server. 
