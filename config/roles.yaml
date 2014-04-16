@@ -27,6 +27,8 @@ roles:
         inline: '/opt/puppet/bin/puppet module install puppetlabs/pe_gem --version 0.0.1'
       - type: shell
         inline: '/bin/cp /tmp/puppet/manifests/site.pp /etc/puppetlabs/puppet/manifests/site.pp'
+      - type: shell 
+        inline: 'service pe-httpd restart'
 
   master:
     provisioners:
