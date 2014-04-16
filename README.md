@@ -28,6 +28,7 @@
    dhcp server.  
   - From there it will be handed off to the razor server. 
   - Razor will not provision the box until you setup a policy to do so
+    - http://docs.puppetlabs.com/pe/latest/razor_using.html
   - Expect the box to load a microkernel and just sit there wating for
     razor to instruct it.   
 7. The razor client is installed on the razor-server.  You can use
@@ -41,6 +42,10 @@ addresses assigned from the vagrant configuration.  They resolve each
 other via `/etc/hosts`.  However, any new boxes you create to PXE boot
 will automatically get an ip from the dhcp-server and will resolve
 the razor-server via DNS that is setup on the dhcp-server.  
+
+Wondering how the PXE booted box is able to connect to the internet?
+The DHCP server is also acting like a router and forwarding ipv4 
+traffic to the internet from the PXE booted boxes.
 
 Total Stack Boot Time (timed on my laptop with SSD) 
  1. puppet-master 10 mins
