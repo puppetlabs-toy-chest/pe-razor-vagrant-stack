@@ -5,7 +5,7 @@ vms:
     box:  "centos-64-x64-vbox4210-nocm"
     private_networks:
     - { ip: '192.168.50.22', virtualbox__intnet: "Razor_Network" }
-#    - { ip: '192.168.51.22' }
+    - { ip: '192.168.51.22' }
     roles: [ "base_1536mb_ram", "master_base",  "master", "centos" ]
 
   - name: "razor-server"
