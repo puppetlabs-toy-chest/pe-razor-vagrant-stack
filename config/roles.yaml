@@ -13,7 +13,7 @@ roles:
       customize:
         - [modifyvm, !ruby/sym id, '--memory', 1024]
 
-  master:
+  master_base:
     synced_folders:
       - host_path:  'puppet'
         guest_path: '/tmp/puppet'
@@ -28,14 +28,14 @@ roles:
       - type: shell
         inline: '/bin/cp /tmp/puppet/manifests/site.pp /etc/puppetlabs/puppet/manifests/site.pp'
 
-  master320:
+  master:
     provisioners:
       - type: shell
         inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
       - type: hosts
       - type: pe_bootstrap
         role: :master
-        version: '3.2.0'
+#        version: '3.2.0'
 
   windows_agent:
     guest: windows
@@ -47,12 +47,12 @@ roles:
         version: '3.2.0'
         master: 'puppet-master'
 
-  agent_320:
+  agent:
     provisioners:
       - {type: shell, inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"}
       - {type: hosts}
       - type: pe_bootstrap
-        version: '3.2.0'
+#        version: '3.2.0'
         master: 'puppet-master' 
 
   centos: 
@@ -60,3 +60,13 @@ roles:
       - type: shell
         inline: 'service iptables stop; chkconfig iptables off;'
 
+  dhcp_nat:
+    provisioners:
+      - type: shell
+        inline: 'iptables -F'
+      - type: shell
+        inline: 'iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE'
+      - type: shell 
+        inline: 'service iptables save'
+      - type: shell
+        inline: 'service iptables restart'

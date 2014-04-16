@@ -44,6 +44,7 @@ node default {
 
 node 'dhcp-server' {
  include 'razor_dnsmasq'
+ include 'razor_ipv4_forward'
 }
 
 node 'razor-server' {
