@@ -61,7 +61,8 @@ class razor_dnsmasq {
 
   exec { 'get bootstrap.ipxe from razor server' :
     command => '/usr/bin/wget http://razor-server:8080/api/microkernel/bootstrap?nic_max=1 -O /var/lib/tftpboot/bootstrap.ipxe',
-    unless  => '/bin/ls /var/lib/tftpboot/bootstrap.ipxe',
+    tries   => 10,
+    try_sleep => 30,
+    unless  => '/usr/bin/test -s /var/lib/tftpboot/bootstrap.ipxe',
   }
-
 }
