@@ -1,13 +1,12 @@
 1. Install VirtualBox
- - I've successfully used 4.2.22 and 4.3.8
+ - I've successfully used 4.2.22, 4.3.8, 4.3.12
 2. Install VirtualBox Extension Pack 
  - This is necessary to be able to PXE boot a VM without a iso file or
    using the default Intel network adapter
  - I had sucess on VBox 4.2.22 using the PCnet-FAST III (Am79C973)
    adapter without the extension pack but others reported issues to me
 2. Install Vagrant
-  - Use 1.4.3 for now.  I do not believe 1.5.0 works with this setup
-    yet.   
+  - I've personally used 1.4.3 in the past and 1.6.3 right now.
 3. `vagrant plugin install oscar`
   - Optional: `vagrant plugin install vagrant-multiprovider-snap`
 4. `vagrant up` 
