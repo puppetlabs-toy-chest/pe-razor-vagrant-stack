@@ -1,6 +1,6 @@
 class razor_client {
 
-  package { 'razor-client' :
+  package { 'pe-razor-client' :
     ensure   => present,
     provider => pe_gem,
   }
