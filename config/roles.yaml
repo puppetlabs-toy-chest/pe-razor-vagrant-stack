@@ -22,7 +22,7 @@ roles:
         inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
       - type: hosts
       - type: shell
-        inline: "/opt/puppet/bin/puppet config set modulepath /etc/puppetlabs/puppet/modules:/tmp/puppet/modules:/opt/puppet/share/puppet/modules/"
+        inline: "x=`/opt/puppet/bin/puppet config print basemodulepath`;/opt/puppet/bin/puppet config set basemodulepath ${x}:/tmp/puppet/modules"
       - type: shell
         inline: '/opt/puppet/bin/puppet module install puppetlabs/pe_gem --version 0.0.1'
       - type: shell
