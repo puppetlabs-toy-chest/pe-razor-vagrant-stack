@@ -1,5 +1,5 @@
 class pe_env {
-  $file = '/root/.bashrc_profile'
+  $file = '/root/.bash_profile'
 
   file { $file :
     ensure => 'file',
