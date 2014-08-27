@@ -47,7 +47,12 @@ node 'dhcp-server' {
  include 'razor_ipv4_forward'
 }
 
+node 'puppet-master' {
+ include 'pe_env'
+}
+
 node 'razor-server' {
+ include 'pe_env'
  include 'pe_razor'
  include 'razor_client'
 }
