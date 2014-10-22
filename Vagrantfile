@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.require_plugin('oscar')
+#Vagrant.require_plugin('oscar')
 
 if defined? Oscar
   vagrantdir = File.dirname(__FILE__)
