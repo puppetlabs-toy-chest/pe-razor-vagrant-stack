@@ -13,7 +13,7 @@ class razor_client {
   file { '/usr/bin/razor' :
     ensure  => link,
     target  => '/opt/puppet/bin/razor',
-    require => Package['razor-client'],
+    require => Package['pe-razor-client'],
   }
 
 }
