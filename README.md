@@ -1,28 +1,34 @@
 1. Install VirtualBox
- - I've successfully used 4.2.22, 4.3.8, 4.3.12
+ - I've successfully used 4.2.22, 4.3.8, 4.3.12, 4.3.18
 2. Install VirtualBox Extension Pack 
  - This is necessary to be able to PXE boot a VM without a iso file or
    using the default Intel network adapter
  - I had sucess on VBox 4.2.22 using the PCnet-FAST III (Am79C973)
    adapter without the extension pack but others reported issues to me
 2. Install Vagrant
-  - I've personally used 1.4.3 in the past and 1.6.3 right now.
+  - I've personally used 1.4.3, 1.6.3 in the past and 1.6.5 right now.
 3. `vagrant plugin install oscar`
   - Optional: `vagrant plugin install vagrant-multiprovider-snap`
 4. `vagrant up` 
   - Optional: `vagrant snap take`
-5. Manually create VMs in virtual box to PXE boot
+5. Create VMs in virtual box to PXE boot
+  - You can skip the specifics and use the example VM definition I created
+    and placed in example_pxe_boot_vm otherwise continue reading
   - Create a VM with atleast 512MB of RAM
     - I tried 256MB and it froze during the PXE boot process
   - Under system: Add Network to be enabled in the Boot Order.  
     - It can be last but it needs to be enabled.
+  - Under system -> extended features: disable "Enable I/O APIC
+    - I'm not sure why but if you don't the disable this you will get an error
+      after razor tells the server with OS to install and reboots the server you
+      will get an error like "FATAL: INT18: BOOT FAILURE" 
   - Under Network:
     - Attach it to Internal Network called `Razor_Network`.  This is the
       network the other 3 boxes are on
     - If you run into issues with the download of the microkernel
-      freezing during the download you can try changing to a different
-      network adapter
-        - Such as  PCnet-FAST III (Am79C973)
+      freezing during the download: 
+        - Make sure you've installed the virtualbox extension pack 
+        - You can also try changing to a different network adapter
 6. Start your new box and it will PXE boot and receive an image from the
    dhcp server.  
   - From there it will be handed off to the razor server. 
