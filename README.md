@@ -38,10 +38,6 @@
     razor to instruct it.   
 7. The razor client is installed on the razor-server.  You can use
    the client to create a policy. 
-  - WARNING: After you've created a policy and your box reboots to install
-    the repo your policy defines it may fail to boot into the installation
-    media due to an issue with virtualbox.  If you force close the vm and 
-    reboot it will proceed as normal.  
 8. If you would like to connect to the puppet enterprise console you can
    connect from your machine at https://192.168.51.22.  
 
