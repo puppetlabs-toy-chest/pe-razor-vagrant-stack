@@ -1,0 +1,27 @@
+---
+#Drop puppetdb Java Heap Size
+#PE3.2 and above
+pe_puppetdb::pe::java_args:
+  -Xmx: '256m'
+  -Xms: '64m'
+#PE3.1 and below
+pe_puppetdb::java_args:
+  -Xmx: '256m'
+  -Xms: '64m'
+#Drop the activemq java heap size 
+pe_mcollective::role::master::activemq_heap_mb: '96'
+#allow access to the puppetdb performance dashboard from non-localhost
+pe_puppetdb::pe::listen_address: '0.0.0.0'
+
+#PE3.4
+puppet_enterprise::profile::puppetdb::listen_address: '0.0.0.0'
+puppet_enterprise::profile::amq::broker::heap_mb: '96'
+puppet_enterprise::profile::master::java_args:
+  Xmx: '1024m'
+  Xms: '64m'
+puppet_enterprise::profile::puppetdb::java_args:
+  Xmx: '128m'
+  Xms: '64m'
+puppet_enterprise::profile::console::java_args:
+  Xmx: '256m'
+  Xms: '64m'

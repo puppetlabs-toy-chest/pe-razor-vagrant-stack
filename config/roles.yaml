@@ -1,11 +1,11 @@
 ---
 roles:
 
-  base_1536mb_ram:
+  base_2048mb_ram:
     provider:
       type: virtualbox
       customize:
-        - [modifyvm, !ruby/sym id, '--memory', 1536]
+        - [modifyvm, !ruby/sym id, '--memory', 2048]
 
   base_1024mb_ram:
     provider:
@@ -20,21 +20,28 @@ roles:
     provisioners:
       - type: shell
         inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
-      - type: hosts
       - type: shell
         inline: "x=`/opt/puppet/bin/puppet config print basemodulepath`;/opt/puppet/bin/puppet config set basemodulepath ${x}:/tmp/puppet/modules"
+      - type: shell
+        inline: /opt/puppet/bin/puppet module install puppetlabs/stdlib --version 4.4.0 
       - type: shell
         inline: '/opt/puppet/bin/puppet module install puppetlabs/pe_gem --version 0.0.1'
       - type: shell
         inline: '/bin/cp /tmp/puppet/manifests/site.pp /etc/puppetlabs/puppet/manifests/site.pp'
+      - type: shell
+        inline: '/opt/puppet/bin/puppet apply /tmp/puppet/misc/make_link_to_site_pp.pp'
+      #restart the master for 3.3 and below
       - type: shell 
         inline: 'service pe-httpd restart'
+      #restart the master for 3.4 and above
+      - type: shell
+        inline: 'service pe-puppetserver restart'
 
   master:
     provisioners:
-      - type: shell
-        inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
       - type: hosts
+      - type: shell
+        inline: 'mkdir -p /var/lib/hiera; cp /vagrant/hierafiles/defaults.yaml /var/lib/hiera/defaults.yaml'
       - type: pe_bootstrap
         role: :master
 #        version: '3.2.0'
