@@ -13,7 +13,7 @@ pe_mcollective::role::master::activemq_heap_mb: '96'
 #allow access to the puppetdb performance dashboard from non-localhost
 pe_puppetdb::pe::listen_address: '0.0.0.0'
 
-#PE3.4
+#PE3.7
 puppet_enterprise::profile::puppetdb::listen_address: '0.0.0.0'
 puppet_enterprise::profile::amq::broker::heap_mb: '96'
 puppet_enterprise::profile::master::java_args:
@@ -25,3 +25,5 @@ puppet_enterprise::profile::puppetdb::java_args:
 puppet_enterprise::profile::console::java_args:
   Xmx: '256m'
   Xms: '64m'
+puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1
+puppet_enterprise::profile::console::delayed_job_workers: 1
