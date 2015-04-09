@@ -17,13 +17,17 @@ pe_puppetdb::pe::listen_address: '0.0.0.0'
 puppet_enterprise::profile::puppetdb::listen_address: '0.0.0.0'
 puppet_enterprise::profile::amq::broker::heap_mb: '96'
 puppet_enterprise::profile::master::java_args:
-  Xmx: '1024m'
+  Xmx: '128m'
   Xms: '64m'
+  'XX:MaxPermSize': '=96m'
+  'XX:PermSize': '=96m'
 puppet_enterprise::profile::puppetdb::java_args:
   Xmx: '128m'
   Xms: '64m'
 puppet_enterprise::profile::console::java_args:
-  Xmx: '256m'
+  Xmx: '128m'
   Xms: '64m'
-puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1
+puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1 #PE3.7.2
 puppet_enterprise::profile::console::delayed_job_workers: 1
+#shared_buffers takes affect during install but is not managed after
+puppet_enterprise::profile::database::shared_buffers: '4MB'
