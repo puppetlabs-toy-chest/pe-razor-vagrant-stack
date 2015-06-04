@@ -10,10 +10,13 @@ pe_puppetdb::java_args:
   -Xms: '64m'
 #Drop the activemq java heap size 
 pe_mcollective::role::master::activemq_heap_mb: '96'
-#allow access to the puppetdb performance dashboard from non-localhost
+#Allow access to the puppetdb performance dashboard from non-localhost
+#This is insecure and also allows access to all API endpoints without verification
 pe_puppetdb::pe::listen_address: '0.0.0.0'
 
 #PE3.7
+#Allow access to the puppetdb performance dashboard from non-localhost
+#This is insecure and also allows access to all API endpoints without verification
 puppet_enterprise::profile::puppetdb::listen_address: '0.0.0.0'
 puppet_enterprise::profile::amq::broker::heap_mb: '96'
 puppet_enterprise::profile::master::java_args:
