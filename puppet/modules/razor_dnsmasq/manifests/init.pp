@@ -59,9 +59,10 @@ class razor_dnsmasq {
     source => 'puppet:///modules/razor_dnsmasq/undionly-20140116.kpxe',
   }
 
-  case versioncmp( $::pe_version, '3.7.99') {
-      '-1': { $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'http://razor-server:8080/api/microkernel/bootstrap?nic_max=1' -O /var/lib/tftpboot/bootstrap.ipxe" }
-      default:  { $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'https://razor-server:8151/api/microkernel/bootstrap?nic_max=1&http_port=8150' -O /var/lib/tftpboot/bootstrap.ipxe" }
+  if ($::pe_version != undef and (versioncmp( $::pe_version, '3.7.99') == -1)) {
+    $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'http://razor-server:8080/api/microkernel/bootstrap?nic_max=1' -O /var/lib/tftpboot/bootstrap.ipxe"
+  } else {
+    $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'https://razor-server:8151/api/microkernel/bootstrap?nic_max=1&http_port=8150' -O /var/lib/tftpboot/bootstrap.ipxe"
   }
 
   exec { 'get bootstrap.ipxe from razor server' :
