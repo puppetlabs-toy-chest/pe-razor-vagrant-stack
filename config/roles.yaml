@@ -2,16 +2,16 @@
 roles:
 
   base_2048mb_ram:
-    provider:
-      type: virtualbox
-      customize:
-        - [modifyvm, !ruby/sym id, '--memory', 2048]
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 2048]
 
   base_1024mb_ram:
-    provider:
-      type: virtualbox
-      customize:
-        - [modifyvm, !ruby/sym id, '--memory', 1024]
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 1024]
 
   master_base:
     synced_folders:
@@ -52,8 +52,7 @@ roles:
     provisioners:
       - {type: shell, inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"}
       - {type: hosts}
-      - type: pe_bootstrap
-#        version: '3.2.0'
+      - type: pe_agent
         master: 'puppet-master'
 
   centos:

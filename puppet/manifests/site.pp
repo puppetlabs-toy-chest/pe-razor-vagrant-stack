@@ -53,6 +53,9 @@ node 'puppet-master' {
 
 node 'razor-server' {
  include 'pe_env'
- include 'pe_razor'
+ class {'pe_razor':
+   enable_windows_smb => true,
+   protect_new_nodes => false,
+ }
  include 'razor_client'
 }
