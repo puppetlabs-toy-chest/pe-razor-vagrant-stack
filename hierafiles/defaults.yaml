@@ -20,17 +20,30 @@ pe_puppetdb::pe::listen_address: '0.0.0.0'
 puppet_enterprise::profile::puppetdb::listen_address: '0.0.0.0'
 puppet_enterprise::profile::amq::broker::heap_mb: '96'
 puppet_enterprise::profile::master::java_args:
-  Xmx: '128m'
-  Xms: '64m'
+  Xmx: '192m'
+  Xms: '128m'
   'XX:MaxPermSize': '=96m'
-  'XX:PermSize': '=96m'
+  'XX:PermSize': '=64m'
+  'XX:+UseG1GC': ''
 puppet_enterprise::profile::puppetdb::java_args:
   Xmx: '128m'
-  Xms: '64m'
+  Xms: '128m'
+  'XX:MaxPermSize': '=96m'
+  'XX:PermSize': '=64m'
+  'XX:+UseG1GC': ''
 puppet_enterprise::profile::console::java_args:
-  Xmx: '128m'
+  Xmx: '64m'
   Xms: '64m'
-puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1 #PE3.7.2
+  'XX:MaxPermSize': '=96m'
+  'XX:PermSize': '=64m'
+  'XX:+UseG1GC': ''
+puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1  #PE3.7.2 only
 puppet_enterprise::profile::console::delayed_job_workers: 1
 #shared_buffers takes affect during install but is not managed after
 puppet_enterprise::profile::database::shared_buffers: '4MB'
+#puppet_enterprise::profile::console::classifier_synchronization_period: 0
+#2015.3.2 and above
+puppet_enterprise::profile::orchestrator::java_args:
+  Xmx: '64m'
+  Xms: '64m'
+  'XX:+UseG1GC': ''
