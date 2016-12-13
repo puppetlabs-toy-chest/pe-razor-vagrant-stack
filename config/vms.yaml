@@ -2,6 +2,7 @@
 vms:
 
   - name: "puppet-master"
+    hostname: "puppet-master.pe-razor.stack"
     box:  "puppetlabs/centos-6.6-64-nocm"
     private_networks:
     - { ip: '192.168.50.22', virtualbox__intnet: "Razor_Network" }
@@ -9,6 +10,7 @@ vms:
     roles: [ "base_2048mb_ram", "master_base",  "master", "centos" ]
 
   - name: "razor-server"
+    hostname: "razor-server.pe-razor.stack"
     box:  "puppetlabs/centos-6.6-64-nocm"
     private_networks:
     - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
@@ -16,6 +18,7 @@ vms:
     roles: [ "base_1024mb_ram", "agent", "centos" ]
 
   - name: "dhcp-server"
+    hostname: "dhcp-server.pe-razor.stack"
     box:  "puppetlabs/centos-6.6-64-nocm"
     private_networks:
     - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
