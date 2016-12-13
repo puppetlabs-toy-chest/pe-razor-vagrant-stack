@@ -19,8 +19,6 @@ roles:
         guest_path: '/tmp/puppet'
     provisioners:
       - type: shell
-        inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
-      - type: shell
         inline: "x=`/opt/puppetlabs/bin/puppet config print basemodulepath`;/opt/puppetlabs/bin/puppet config set basemodulepath ${x}:/tmp/puppet/modules"
       - type: shell
         inline: '/opt/puppetlabs/bin/puppet module install puppetlabs/stdlib --version 4.4.0'
