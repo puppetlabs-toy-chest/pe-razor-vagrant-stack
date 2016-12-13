@@ -1,4 +1,4 @@
 ---
 pe_build:
-  version: '2016.4.0'
+  version: '2016.4.2'
   download_root: "https://s3.amazonaws.com/pe-builds/released/:version"
