@@ -24,11 +24,13 @@
     - http://docs.puppetlabs.com/pe/latest/razor_using.html
   - Expect the box to load a microkernel and just sit there wating for
     razor to instruct it.
-9. The razor client is installed on the razor-server.  You can use
+9. The razor client is installed on the razor.server.  You can use
    the client to create a policy.
 10. If you would like to connect to the puppet enterprise console you can
    connect from your machine at https://192.168.51.22.
   - The username is `admin` and the password is `puppetlabs`
+11. If you would like to connect to the Razor Server, including its API,
+   you can connect from your machine at e.g. https://192.168.51.12:8151/api.
 
 ## Creating a VM for PXE booting with Razor
 
@@ -53,11 +55,11 @@ If for some reason you don't want to use the VM definition in `example_pxe_boot_
 ## Networking Notes
 
 If you run into any DNS issues then there's a few things to know.
-The puppet-master, razor-server, and dhcp-server all have static ip
+The puppet.master, razor.server, and dhcp.server all have static ip
 addresses assigned from the vagrant configuration.  They resolve each
 other via `/etc/hosts`.  However, any new boxes you create to PXE boot
-will automatically get an ip from the dhcp-server and will resolve
-the razor-server via DNS that is setup on the dhcp-server.
+will automatically get an ip from the dhcp.server and will resolve
+the razor.server via DNS that is setup on the dhcp.server.
 
 Wondering how the PXE booted box is able to connect to the internet?
 The DHCP server is also acting like a router and forwarding ipv4
@@ -66,8 +68,8 @@ traffic to the internet from the PXE booted boxes.
 ## Stack Boot Time
 
 Total Stack Boot Time (timed on my laptop with SSD)
- 1. puppet-master 10 mins
- 2. razor-server  15 mins
- 3. dhcp-server   7  mins
+ 1. puppet.master 10 mins
+ 2. razor.server  15 mins
+ 3. dhcp.server   7  mins
 
 

@@ -1,42 +1,42 @@
 ---
 vms:
 
-  - name: "puppet-master"
+  - name: "puppet.master"
     box:  "puppetlabs/centos-7.0-64-nocm"
     private_networks:
     - { ip: '192.168.50.22', virtualbox__intnet: "Razor_Network" }
     - { ip: '192.168.51.22' }
     roles: [ "large-size", "master_base",  "master", "el-stop-firewall" ]
 
-  - name: "razor-server"
+  - name: "razor.server"
     box:  "puppetlabs/centos-7.0-64-nocm"
     private_networks:
     - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
     - { ip: '192.168.51.12'}
     roles: [ "medium-size", "agent", "el-stop-firewall" ]
 
-  - name: "dhcp-server"
+  - name: "dhcp.server"
     box:  "puppetlabs/centos-7.0-64-nocm"
     private_networks:
     - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
     roles: [ "medium-size", "agent", "dhcp_nat-el7" ]
 
 ## Use these values for EL6.
-#  - name: "puppet-master"
+#  - name: "puppet.master"
 #    box:  "puppetlabs/centos-6.6-64-nocm"
 #    private_networks:
 #    - { ip: '192.168.50.22', virtualbox__intnet: "Razor_Network" }
 #    - { ip: '192.168.51.22' }
 #    roles: [ "base_4096mb_ram", "master_base",  "master", "el-stop-firewall" ]
 #
-#  - name: "razor-server"
+#  - name: "razor.server"
 #    box:  "puppetlabs/centos-6.6-64-nocm"
 #    private_networks:
 #    - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
 #    - { ip: '192.168.51.12'}
 #    roles: [ "base_2048mb_ram", "agent", "el-stop-firewall" ]
 #
-#  - name: "dhcp-server"
+#  - name: "dhcp.server"
 #    box:  "puppetlabs/centos-6.6-64-nocm"
 #    private_networks:
 #    - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
