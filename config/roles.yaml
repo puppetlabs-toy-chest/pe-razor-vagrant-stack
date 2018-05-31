@@ -7,11 +7,11 @@ roles:
         customize:
           - [modifyvm, !ruby/sym id, '--memory', 2048]
 
-  base_1024mb_ram:
+  base_4096mb_ram:
     providers:
       - type: virtualbox
         customize:
-          - [modifyvm, !ruby/sym id, '--memory', 1024]
+          - [modifyvm, !ruby/sym id, '--memory', 4096]
 
   master_base:
     synced_folders:
@@ -53,12 +53,16 @@ roles:
       - type: pe_agent
         master: 'puppet-master'
 
-  centos:
+  centos6:
     provisioners:
       - type: shell
         inline: 'service iptables stop; chkconfig iptables off;'
+  centos7:
+    provisioners:
+      - type: shell
+        inline: 'systemctl stop firewalld.service; chkconfig firewalld off;'
 
-  dhcp_nat:
+  dhcp_nat-el6:
     provisioners:
       - type: shell
         inline: 'iptables -F'
@@ -68,3 +72,13 @@ roles:
         inline: 'service iptables save'
       - type: shell
         inline: 'service iptables restart'
+  dhcp_nat-el7:
+    provisioners:
+      - type: shell
+        inline: 'iptables -F'
+      - type: shell
+        inline: 'iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE'
+      - type: shell
+        inline: 'iptables-save'
+      - type: shell
+        inline: 'systemctl restart firewalld.service'
