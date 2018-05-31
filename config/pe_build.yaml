@@ -1,4 +1,8 @@
 ---
+# See https://github.com/oscar-stack/vagrant-pe_build#global-configpe_build-settings
 pe_build:
-  version: '2017.3.2'
+  version: '2018.1.1'
   download_root: "https://s3.amazonaws.com/pe-builds/released/:version"
+
+# Use this if Minitar fails to extract the PE TAR.
+#  shared_installer: false
