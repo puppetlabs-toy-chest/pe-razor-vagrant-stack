@@ -1,4 +1,4 @@
-address=/puppet-master/192.168.50.22
-address=/razor-server/192.168.50.12
-address=/dhcp-server/192.168.50.32
+address=/puppet.master/192.168.50.22
+address=/razor.server/192.168.50.12
+address=/dhcp.server/192.168.50.32
 

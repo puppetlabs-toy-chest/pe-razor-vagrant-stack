@@ -19,7 +19,7 @@
 
 # Define filebucket 'main':
 #filebucket { 'main':
-#  server => 'puppet-master',
+#  server => 'puppet.master',
 #  path   => false,
 #}
 
@@ -42,16 +42,16 @@ node default {
   #   class { 'my_class': }
 }
 
-node 'dhcp-server' {
+node 'dhcp.server' {
  include 'razor_dnsmasq'
  include 'razor_ipv4_forward'
 }
 
-node 'puppet-master' {
+node 'puppet.master' {
  include 'pe_env'
 }
 
-node 'razor-server' {
+node 'razor.server' {
  include 'pe_env'
  class {'pe_razor':
    enable_windows_smb => true,

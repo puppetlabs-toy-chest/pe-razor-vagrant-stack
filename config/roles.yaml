@@ -31,14 +31,14 @@ roles:
       - {type: hosts}
       - type: pe_bootstrap
         version: '3.2.0'
-        master: 'puppet-master'
+        master: 'puppet.master'
 
   agent:
     provisioners:
       - {type: shell, inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"}
       - {type: hosts}
       - type: pe_agent
-        master: 'puppet-master'
+        master: 'puppet.master'
 
   dhcp_nat-el6:
     provisioners:

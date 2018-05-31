@@ -60,9 +60,9 @@ class razor_dnsmasq {
   }
 
   if ($::pe_version != undef and (versioncmp( $::pe_version, '3.7.99') == -1)) {
-    $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'http://razor-server:8080/api/microkernel/bootstrap?nic_max=1' -O /var/lib/tftpboot/bootstrap.ipxe"
+    $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'http://razor.server:8080/api/microkernel/bootstrap?nic_max=1' -O /var/lib/tftpboot/bootstrap.ipxe"
   } else {
-    $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'https://razor-server:8151/api/microkernel/bootstrap?nic_max=1&http_port=8150' -O /var/lib/tftpboot/bootstrap.ipxe"
+    $ipxe_dl_cmd = "/usr/bin/wget --no-check-certificate 'https://razor.server:8151/api/microkernel/bootstrap?nic_max=1&http_port=8150' -O /var/lib/tftpboot/bootstrap.ipxe"
   }
 
   exec { 'get bootstrap.ipxe from razor server' :
