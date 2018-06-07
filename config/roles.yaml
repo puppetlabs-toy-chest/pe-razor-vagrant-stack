@@ -1,18 +1,5 @@
 ---
 roles:
-
-  base_2048mb_ram:
-    providers:
-      - type: virtualbox
-        customize:
-          - [modifyvm, !ruby/sym id, '--memory', 2048]
-
-  base_4096mb_ram:
-    providers:
-      - type: virtualbox
-        customize:
-          - [modifyvm, !ruby/sym id, '--memory', 4096]
-
   master_base:
     synced_folders:
       - host_path:  'puppet'
