@@ -1,0 +1,3 @@
+[submodule "debugkit"]
+	path = debugkit
+	url = https://github.com/Sharpie/puppet-debugging-kit

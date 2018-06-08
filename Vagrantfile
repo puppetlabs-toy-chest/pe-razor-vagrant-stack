@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+load File.expand_path('../debugkit/Vagrantfile', __FILE__)
+
 #Vagrant.require_plugin('oscar')
 
 if defined? Oscar
