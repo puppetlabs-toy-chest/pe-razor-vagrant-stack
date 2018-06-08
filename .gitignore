@@ -1,5 +1,12 @@
 .DS_Store
-/.pe_build
-/.vagrant
 *.swp
 /files
+.bundle
+.pe_build
+.ruby-version
+.vagrant
+Gemfile.local
+Gemfile.lock
+bin
+config/*.yaml
+src/puppetlabs

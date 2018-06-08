@@ -1,0 +1,89 @@
+---
+# Keep the default Vagrant SSH key. It's publicly available and thus
+# "insecure", but these VMs aren't for production use and having a well-known
+# key allows for easy automation and documentation.
+ssh:
+  insert_key: false
+
+vms:
+
+  - name: pe-201810-master
+    debug-kit: true
+    box: puppetlabs/centos-7.2-64-nocm
+    roles:
+      - pe-forward-console
+      - pe-memory-tuning2
+      - el-stop-firewall
+      - el-fix-path
+      - medium-size
+      - base
+
+  - name: pe-201810-agent
+    debug-kit: true
+    box: puppetlabs/centos-7.2-64-nocm
+    roles:
+      - el-stop-firewall
+      - el-fix-path
+      - base
+
+
+  - name: pe-201736-master
+    debug-kit: true
+    box: puppetlabs/centos-7.2-64-nocm
+    roles:
+      - pe-forward-console
+      - pe-memory-tuning2
+      - el-stop-firewall
+      - el-fix-path
+      - medium-size
+      - base
+
+  - name: pe-201736-agent
+    debug-kit: true
+    box: puppetlabs/centos-7.2-64-nocm
+    roles:
+      - el-stop-firewall
+      - el-fix-path
+      - base
+
+
+  - name: pe-2016411-master
+    debug-kit: true
+    box: puppetlabs/centos-7.2-64-nocm
+    roles:
+      - pe-forward-console
+      - pe-memory-tuning2
+      - el-stop-firewall
+      - el-fix-path
+      - medium-size
+      - base
+
+  - name: pe-2016411-agent
+    debug-kit: true
+    box: puppetlabs/centos-7.2-64-nocm
+    roles:
+      - el-stop-firewall
+      - el-fix-path
+      - base
+
+
+  - name: pe-387-master
+    debug-kit: true
+    box: puppetlabs/centos-6.6-64-nocm
+    roles:
+      - pe-forward-console
+      - pe-memory-tuning
+      - el-stop-firewall
+      - el-fix-path
+      - medium-size
+      - base
+
+  - name: pe-387-agent
+    debug-kit: true
+    box: puppetlabs/centos-6.6-64-nocm
+    roles:
+      - el-stop-firewall
+      - el-fix-path
+      - base
+
+# vim: set ft=yaml:

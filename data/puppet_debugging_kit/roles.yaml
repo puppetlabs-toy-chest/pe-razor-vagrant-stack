@@ -1,0 +1,426 @@
+---
+roles:
+
+  # General Purpose Roles
+  # =====================
+  base:
+    provisioners:
+      # A generic hosts provisioner is defined here so that networking is one
+      # of the first things configured. Other roles can hook into the
+      # 'base networking' provisioner and override settings.
+      - {type: hosts, name: 'base networking'}
+    providers:
+      - type: virtualbox
+        linked_clone: true
+        overrides:
+          vm_defaults:
+            private_networks:
+              - {auto_network: true}
+            provisioners:
+              - type: hosts
+                name: 'base networking'
+                preserve_order: true
+                sync_hosts: true
+                add_localhost_hostnames: false
+                hosts:
+                  - ['@vagrant_private_networks', ['@vagrant_hostnames']]
+                imports: ['global', 'virtualbox', 'vmware']
+                exports:
+                  virtualbox:
+                    - ['@vagrant_private_networks', ['@vagrant_hostnames']]
+      - type: vmware_fusion
+        overrides:
+          vm_defaults:
+            private_networks:
+              - {auto_network: true}
+            provisioners:
+              - type: hosts
+                name: 'base networking'
+                preserve_order: true
+                sync_hosts: true
+                add_localhost_hostnames: false
+                hosts:
+                  - ['@vagrant_private_networks', ['@vagrant_hostnames']]
+                imports: ['global', 'virtualbox', 'vmware']
+                exports:
+                  vmware:
+                    - ['@vagrant_private_networks', ['@vagrant_hostnames']]
+      - type: vmware_workstation
+        overrides:
+          vm_defaults:
+            private_networks:
+              - {auto_network: true}
+            provisioners:
+              - type: hosts
+                name: 'base networking'
+                preserve_order: true
+                sync_hosts: true
+                add_localhost_hostnames: false
+                hosts:
+                  - ['@vagrant_private_networks', ['@vagrant_hostnames']]
+                imports: ['global', 'virtualbox', 'vmware']
+                exports:
+                  vmware:
+                    - ['@vagrant_private_networks', ['@vagrant_hostnames']]
+
+  windows:
+    communicator: winrm
+    forwarded_ports:
+      - {guest: 22,   host: 2222,  auto_correct: true, id: ssh}
+      - {guest: 3389, host: 3389, auto_correct: true, id: rdp}
+
+  el-stop-firewall:
+    provisioners:
+      - type: shell
+        inline: |
+          RH_VERS=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)|grep -o '^[0-9]')
+          if [ "$RH_VERS" -gt "6" ]; then
+            systemctl stop firewalld.service
+            systemctl disable firewalld.service
+          else
+            service iptables stop
+            chkconfig iptables off
+          fi
+
+          # Some templates have firewalls configured weird. Just return success.
+          exit 0
+
+
+  # Adds /usr/local/bin to the PATH
+  el-fix-path:
+    provisioners:
+      - type: shell
+        inline: |
+          echo "export PATH=$PATH:/usr/local/bin" > /etc/profile.d/path_fix.sh
+
+  1gb-memory:
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 1024]
+      - type: vmware_fusion
+        vmx:
+          memsize: 1024
+
+  2gb-memory:
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 2048]
+      - type: vmware_fusion
+        vmx:
+          memsize: 2048
+
+  4gb-memory:
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 4096]
+      - type: vmware_fusion
+        vmx:
+          memsize: 4096
+
+  #equivalent to 1-gb
+  small-size:
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 1024]
+      - type: vmware_fusion
+        vmx:
+          memsize: 1024
+
+  #equivalent to 2-gb
+  medium-size:
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 2048]
+      - type: vmware_fusion
+        vmx:
+          memsize: 2048
+
+  #equivalent to 4-gb
+  large-size:
+    providers:
+      - type: virtualbox
+        customize:
+          - [modifyvm, !ruby/sym id, '--memory', 4096]
+      - type: vmware_fusion
+        vmx:
+          memsize: 4096
+
+  # Puppet Open Source Roles
+  # ========================
+  el-6-epel:
+    provisioners:
+      - type: shell
+        inline: |
+          if rpm --quiet -q epel-release; then
+            echo 'EPEL repo present.'
+          else
+            echo 'Adding EPEL repos.'
+            rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+          fi
+
+  el-6-ruby193:
+    provisioners:
+      - type: shell
+        inline: |-
+          yum install -y centos-release-SCL
+          yum install -y ruby193-ruby-devel
+
+          # The EOF must be quoted to prevent shell expansion.
+          tee /etc/profile.d/enable-scl-ruby.sh << "EOF"
+          # Enable ruby193 by default
+          source /opt/rh/ruby193/enable
+          # Place scripts installed by ruby193 gems on the PATH
+          export PATH=/opt/rh/ruby193/root/usr/local/bin:$PATH
+          EOF
+
+          source /opt/rh/ruby193/enable
+
+          if ruby -e "begin require 'json'; rescue LoadError; exit(1); end"; then
+            echo "JSON library available."
+          else
+            echo "Installing json_pure gem."
+            gem install --no-rdoc --no-ri json_pure
+          fi
+
+          if ruby -e "begin require 'rgen'; rescue LoadError; exit(1); end"; then
+            echo "RGen library available."
+          else
+            echo "Installing rgen gem."
+            gem install --no-rdoc --no-ri rgen
+          fi
+
+  # NOTE: You will need to apply the el-6-epel role before using this in order
+  # for libyaml to be available.
+  el-6-ruby200:
+    provisioners:
+      - type: shell
+        inline: |-
+          yum install -y https://www.softwarecollections.org/en/scls/rhscl/ruby200/epel-6-x86_64/download/rhscl-ruby200-epel-6-x86_64-1-2.noarch.rpm
+          yum install -y ruby200-ruby-devel
+
+          # The EOF must be quoted to prevent shell expansion.
+          tee /etc/profile.d/enable-scl-ruby.sh << "EOF"
+          # Enable ruby200 by default
+          source /opt/rh/ruby200/enable
+          # Place scripts installed by ruby193 gems on the PATH
+          export PATH=/opt/rh/ruby200/root/usr/local/bin:$PATH
+          EOF
+
+          source /opt/rh/ruby200/enable
+
+          if ruby -e "begin require 'json'; rescue LoadError; exit(1); end"; then
+            echo "JSON library available."
+          else
+            echo "Installing json_pure gem."
+            gem install --no-rdoc --no-ri json_pure
+          fi
+
+          if ruby -e "begin require 'rgen'; rescue LoadError; exit(1); end"; then
+            echo "RGen library available."
+          else
+            echo "Installing rgen gem."
+            gem install --no-rdoc --no-ri rgen
+          fi
+
+  poss-yum-repos:
+    provisioners:
+      - type: shell
+        inline: | # Configure yum.puppetlabs.com on supported platforms.
+          if rpm --quiet -q puppetlabs-release; then
+            echo 'Puppet Labs repo present.'
+          else
+            if [ -f /etc/fedora-release ]; then
+              RH_DIST='fedora'
+            else
+              RH_DIST='el'
+            fi
+            RH_VERS=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
+
+            echo "Adding Puppet Labs repo for $RH_DIST $RH_VERS."
+
+            rpm -ivh "http://yum.puppetlabs.com/puppetlabs-release-$RH_DIST-$RH_VERS.noarch.rpm"
+          fi
+
+  poss-apt-repos:
+    provisioners:
+      - type: shell
+        inline: | # Configure apt.puppetlabs.com on supported platforms.
+          dpkg -s puppetlabs-release | grep -q '^Status:.* installed' || {
+            apt-get install -y curl
+            curl -O http://apt.puppetlabs.com/puppetlabs-release-$(lsb_release -c -s).deb
+            dpkg -i puppetlabs-release-$(lsb_release -c -s).deb
+            apt-get -y -f -m update
+          }
+
+  poss-pc1-repos:
+    provisioners:
+      - type: shell
+        path: data/puppet_debugging_kit/files/bootstrap-pc1.sh
+
+  poss-envpuppet:
+    synced_folders:
+      - {host_path: 'src/puppetlabs', guest_path: '/puppetlabs'}
+    provisioners:
+      - type: shell
+        # The EOF must be quoted to prevent shell expansion of the second line.
+        inline: |-
+          tee /etc/profile.d/envpuppet.sh << "EOF"
+          export ENVPUPPET_BASEDIR=/puppetlabs
+          eval $($ENVPUPPET_BASEDIR/puppet/ext/envpuppet)
+          EOF
+
+          source /etc/profile.d/envpuppet.sh
+
+          puppet resource group puppet ensure=present
+          puppet resource user puppet ensure=present gid=puppet shell='/sbin/nologin'
+
+
+  # PE Specific Roles
+  # =================
+
+  # This role adjusts the default memory usage of PE to run on VMs with 1 GB of
+  # RAM and should always be applied before any provisioner which installs
+  # PE.
+  #
+  # This role requires PE 3.7.2 or newer to function properly.
+  pe-memory-tuning:
+    provisioners:
+      # Upload to /tmp and then use a shell script to copy into place. This
+      # method works with remote machines.
+      - type: file
+        source: 'data/puppet_debugging_kit/files/pe-memory-tuning.yaml'
+        destination: '/tmp/defaults.yaml'
+      - type: shell
+        inline: |-
+          mkdir -p /var/lib/hiera
+          if [ -e /tmp/defaults.yaml ]; then
+            install -m 0644 /tmp/defaults.yaml /var/lib/hiera/
+          fi
+
+  # Exact same as the above role, but for PE 2015.2 and newer.
+  #
+  # I hate this, but if we consolidate it into 1 role, all PE 3.x boxes break
+  # because the installer freaks out if `/etc/puppetlabs` exists.
+  #
+  # The hieradata directory is the default for Hiera 3x, (PE 2017.2.x or older)
+  # the data directory is the default for Hiera 5.x.     (PE 2017.3.x or newer)
+  pe-memory-tuning2:
+    provisioners:
+      # Upload to /tmp and then use a shell script to copy into place. This
+      # method works with remote machines.
+      - type: file
+        source: 'data/puppet_debugging_kit/files/pe-memory-tuning.yaml'
+        destination: '/tmp/common.yaml'
+      - type: shell
+        inline: |-
+          mkdir -p /etc/puppetlabs/code/environments/production/hieradata
+          mkdir -p /etc/puppetlabs/code/environments/production/data
+          if [ -e /tmp/common.yaml ]; then
+            install -m 0644 /tmp/common.yaml /etc/puppetlabs/code/environments/production/hieradata
+            install -m 0644 /tmp/common.yaml /etc/puppetlabs/code/environments/production/data
+          fi
+
+  pe-forward-console:
+    forwarded_ports:
+      - {guest: 443, host: 4443, auto_correct: true}
+
+  pe-323-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '3.2.3'}
+
+  pe-323-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-323-master.puppetdebug.vlan', version: '3.2.3'}
+
+  pe-322-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '3.2.2'}
+
+  pe-322-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-322-master.puppetdebug.vlan', version: '3.2.2'}
+
+  pe-321-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '3.2.1'}
+
+  pe-321-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-321-master.puppetdebug.vlan', version: '3.2.1'}
+
+  pe-313-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '3.1.3'}
+
+  pe-313-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-313-master.puppetdebug.vlan', version: '3.1.3'}
+
+  pe-301-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '3.0.1'}
+
+  pe-301-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-301-master.puppetdebug.vlan', version: '3.0.1'}
+
+  pe-287-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.8.7'}
+
+  pe-287-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-287-master.puppetdebug.vlan', version: '2.8.7'}
+
+  pe-286-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.8.6'}
+
+  pe-286-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-286-master.puppetdebug.vlan', version: '2.8.6'}
+
+  pe-285-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.8.5'}
+
+  pe-285-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-285-master.puppetdebug.vlan', version: '2.8.5'}
+
+  pe-272-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.7.2'}
+
+  pe-272-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-272-master.puppetdebug.vlan', version: '2.7.2'}
+
+  pe-261-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.6.1'}
+
+  pe-261-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-261-master.puppetdebug.vlan', version: '2.6.1'}
+
+  pe-253-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.5.3'}
+
+  pe-253-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-253-master.puppetdebug.vlan', version: '2.5.3'}
+
+  pe-203-master:
+    provisioners:
+      - {type: pe_bootstrap, role: !ruby/sym master, version: '2.0.3'}
+
+  pe-203-agent:
+    provisioners:
+      - {type: pe_bootstrap, master: 'pe-203-master.puppetdebug.vlan', version: '2.0.3'}

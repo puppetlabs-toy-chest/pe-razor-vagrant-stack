@@ -1,18 +1,5 @@
 ---
 roles:
-
-  base_2048mb_ram:
-    providers:
-      - type: virtualbox
-        customize:
-          - [modifyvm, !ruby/sym id, '--memory', 2048]
-
-  base_4096mb_ram:
-    providers:
-      - type: virtualbox
-        customize:
-          - [modifyvm, !ruby/sym id, '--memory', 4096]
-
   master_base:
     synced_folders:
       - host_path:  'puppet'
@@ -52,15 +39,6 @@ roles:
       - {type: hosts}
       - type: pe_agent
         master: 'puppet-master'
-
-  centos6:
-    provisioners:
-      - type: shell
-        inline: 'service iptables stop; chkconfig iptables off;'
-  centos7:
-    provisioners:
-      - type: shell
-        inline: 'systemctl stop firewalld.service; chkconfig firewalld off;'
 
   dhcp_nat-el6:
     provisioners:
