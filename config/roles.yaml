@@ -53,16 +53,11 @@ roles:
   dhcp_nat-el7:
     provisioners:
       - type: shell
-        # This is needed to receive DHCP calls from the node.
-        inline: 'firewall-cmd --zone=public --add-service=dhcp --permanent'
-      - type: shell
-        # This is needed to download the bootstrap.ipxe file
-        inline: 'firewall-cmd --zone=public --add-service=tftp --permanent'
-      - type: shell
-        # This is needed to find the Razor server
-        inline: 'firewall-cmd --zone=public --add-service=dns --permanent'
+        # This default zone will open all ports, so we can get proper traffic
+        # forwarding
+        inline: 'firewall-cmd --set-default-zone=trusted'
       - type: shell
         # This is needed to send large files to the new node from Razor server
-        inline: 'firewall-cmd --zone=public --add-masquerade --permanent'
+        inline: 'firewall-cmd --zone=trusted --add-masquerade --permanent'
       - type: shell
-        inline: 'systemctl restart firewalld.service'
+        inline: 'firewall-cmd --reload'
