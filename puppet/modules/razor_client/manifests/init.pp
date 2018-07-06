@@ -1,8 +1,14 @@
 class razor_client {
+  # Required for razor-client gem to install properly, since one of the
+  # dependencies (`unf`) requires native extensions.
+  package { ['gcc', 'gcc-c++']:
+    ensure => present,
+  }
 
-  package { 'pe-razor-client' :
+  package { 'razor-client' :
     ensure   => present,
     provider => puppet_gem,
+    require => [Package['gcc'], Package['gcc-c++']],
   }
 
   package { 'json_pure' :
@@ -13,7 +19,7 @@ class razor_client {
   file { '/usr/bin/razor' :
     ensure  => link,
     target  => '/opt/puppetlabs/puppet/bin/razor',
-    require => Package['pe-razor-client'],
+    require => Package['razor-client'],
   }
 
 }
