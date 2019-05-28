@@ -19,7 +19,7 @@ vms:
     box:  "puppetlabs/centos-7.0-64-nocm"
     private_networks:
     - { ip: '192.168.50.32', virtualbox__intnet: "Razor_Network" }
-    roles: [ "agent", "dhcp_nat-el7" ]
+    roles: [ "medium-size", "agent", "dhcp_nat-el7" ]
 
 ## Use these values for EL6.
 #  - name: "puppet-master"
