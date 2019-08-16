@@ -13,7 +13,7 @@ vms:
     private_networks:
     - { ip: '192.168.50.12', virtualbox__intnet: "Razor_Network" }
     - { ip: '192.168.51.12'}
-    roles: [ "medium-size", "agent", "el-stop-firewall" ]
+    roles: [ "medium-size", "agent", "el-stop-firewall", "razor_server_symlink" ]
 
   - name: "dhcp.server"
     box:  "puppetlabs/centos-7.0-64-nocm"
