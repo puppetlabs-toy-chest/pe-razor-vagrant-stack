@@ -72,4 +72,12 @@ Total Stack Boot Time (timed on my laptop with SSD)
  2. razor.server  15 mins
  3. dhcp.server   7  mins
 
+## Development Workflow
 
+If you'd like to test out various tasks, hooks, brokers, or lib code, place
+a development version of `razor-server` in the home directory of this repo.
+When the Vagrant instance spins up, any of those four directories (`tasks`,
+`hooks`, `brokers`, or `lib`) will be symlinked into the live Razor instance.
+Any changes made in that directory will be reflected in the Razor instance
+immediately. Note however that the `lib` directory will require a service
+restart of `pe-razor-server`.

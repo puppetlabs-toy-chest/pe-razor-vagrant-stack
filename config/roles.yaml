@@ -70,16 +70,16 @@ roles:
 #      These below map the hooks, tasks, and brokers directories.
       - type: shell
         run: always
-        inline: '[ -e /vagrant/razor-server ] && mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/hooks && ln -s -f /vagrant/razor-server/hooks /opt/puppetlabs/server/apps/razor-server/share/razor-server'
+        inline: 'if [ -e /vagrant/razor-server/hooks ]; then mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/hooks && ln -s -f /vagrant/razor-server/hooks /opt/puppetlabs/server/apps/razor-server/share/razor-server; fi'
       - type: shell
         run: always
-        inline: '[ -e /vagrant/razor-server ] && mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/tasks && ln -s -f /vagrant/razor-server/tasks /opt/puppetlabs/server/apps/razor-server/share/razor-server'
+        inline: 'if [ -e /vagrant/razor-server/tasks ]; then mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/tasks && ln -s -f /vagrant/razor-server/tasks /opt/puppetlabs/server/apps/razor-server/share/razor-server; fi'
       - type: shell
         run: always
-        inline: '[ -e /vagrant/razor-server ] && mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/brokers && ln -s -f /vagrant/razor-server/brokers /opt/puppetlabs/server/apps/razor-server/share/razor-server'
+        inline: 'if [ -e /vagrant/razor-server/brokers ]; then mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/brokers && ln -s -f /vagrant/razor-server/brokers /opt/puppetlabs/server/apps/razor-server/share/razor-server; fi'
       - type: shell
         run: always
-        inline: '[ -e /vagrant/razor-server ] && mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/lib && ln -s -f /vagrant/razor-server/lib /opt/puppetlabs/server/apps/razor-server/share/razor-server'
+        inline: 'if [ -e /vagrant/razor-server/lib ]; then mkdir -p /opt/puppetlabs/server/apps/razor-server/share/razor-server && rm -rf /opt/puppetlabs/server/apps/razor-server/share/razor-server/lib && ln -s -f /vagrant/razor-server/lib /opt/puppetlabs/server/apps/razor-server/share/razor-server; fi'
       - type: shell
         run: always
         # Restart is necessary to pick up symlinked lib directory. Service won't exist yet on the first run, so this skips if that's the case.
