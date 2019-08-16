@@ -35,6 +35,9 @@ roles:
 
   agent:
     provisioners:
+      - type: shell
+        # Run these to ensure pe_frictionless_installer.sh completes.
+        inline: 'yum update -y curl'
       - {type: shell, inline: "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"}
       - {type: hosts}
       - type: pe_agent
